@@ -1,24 +1,24 @@
 #include <iostream>
-#include <stdexcept> // определения стандартных исключений.
+#include <stdexcept> // Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­ГЁГї Г±ГІГ Г­Г¤Г Г°ГІГ­Г»Гµ ГЁГ±ГЄГ«ГѕГ·ГҐГ­ГЁГ©.
 
 class Vector {
 private:
-    int* data;      // Указатель на массив элементов
-    size_t length;  // Длина вектора
+    int* data;      // Г“ГЄГ Г§Г ГІГҐГ«Гј Г­Г  Г¬Г Г±Г±ГЁГў ГЅГ«ГҐГ¬ГҐГ­ГІГ®Гў
+    size_t length;  // Г„Г«ГЁГ­Г  ГўГҐГЄГІГ®Г°Г 
 
 public:
-    // Конструктор по умолчанию
+    // ГЉГ®Г­Г±ГІГ°ГіГЄГІГ®Г° ГЇГ® ГіГ¬Г®Г«Г·Г Г­ГЁГѕ
     Vector() : data(nullptr), length(0) {}
 
-    // Конструктор с параметром (длина)
+    // ГЉГ®Г­Г±ГІГ°ГіГЄГІГ®Г° Г± ГЇГ Г°Г Г¬ГҐГІГ°Г®Г¬ (Г¤Г«ГЁГ­Г )
     explicit Vector(size_t size) : length(size) {
         if (size == 0) {
             throw std::invalid_argument("Size must be greater than 0");
         }
-        data = new int[size]();  // Инициализация нулями
+        data = new int[size]();  // Г€Г­ГЁГ¶ГЁГ Г«ГЁГ§Г Г¶ГЁГї Г­ГіГ«ГїГ¬ГЁ
     }
 
-    // Конструктор с параметрами (длина и значение)
+    // ГЉГ®Г­Г±ГІГ°ГіГЄГІГ®Г° Г± ГЇГ Г°Г Г¬ГҐГІГ°Г Г¬ГЁ (Г¤Г«ГЁГ­Г  ГЁ Г§Г­Г Г·ГҐГ­ГЁГҐ)
     Vector(size_t size, int value) : length(size) {
         if (size == 0) {
             throw std::invalid_argument("Size must be greater than 0");
@@ -29,7 +29,7 @@ public:
         }
     }
 
-    // Конструктор копирования
+    // ГЉГ®Г­Г±ГІГ°ГіГЄГІГ®Г° ГЄГ®ГЇГЁГ°Г®ГўГ Г­ГЁГї
     Vector(const Vector& other) : length(other.length) {
         data = new int[length];
         for (size_t i = 0; i < length; ++i) {
@@ -37,7 +37,7 @@ public:
         }
     }
 
-    // Конструктор инициализации
+    // ГЉГ®Г­Г±ГІГ°ГіГЄГІГ®Г° ГЁГ­ГЁГ¶ГЁГ Г«ГЁГ§Г Г¶ГЁГЁ
     Vector(const int* arr, size_t size) : length(size) {
         if (size == 0) {
             throw std::invalid_argument("Size must be greater than 0");
@@ -48,23 +48,28 @@ public:
         }
     }
 
-    // Оператор присваивания
+    // ГЋГЇГҐГ°Г ГІГ®Г° ГЇГ°ГЁГ±ГўГ ГЁГўГ Г­ГЁГї
     Vector& operator=(const Vector& other) {
-        if (this == &other) {
-            return *this; // само-присваивание
-        }
-
-        delete[] data; // Освобождаем старую память
-        length = other.length;
-        data = new int[length];
-        for (size_t i = 0; i < length; ++i) {
-            data[i] = other.data[i];
-        }
-
-        return *this;
+    if (this == &other) {
+        return *this; // СЃР°РјРѕ-РїСЂРёСЃРІР°РёРІР°РЅРёРµ
     }
 
-    // Оператор сложения
+    // Р•СЃР»Рё СЂР°Р·РјРµСЂРЅРѕСЃС‚Рё РЅРµ СЃРѕРІРїР°РґР°СЋС‚, РІС‹РґРµР»СЏРµРј РЅРѕРІСѓСЋ РїР°РјСЏС‚СЊ
+    if (length != other.length) {
+        delete[] data;
+        length = other.length;
+        data = new int[length];
+    }
+
+    // РљРѕРїРёСЂСѓРµРј РґР°РЅРЅС‹Рµ РЅР°РїСЂСЏРјСѓСЋ
+    for (size_t i = 0; i < length; ++i) {
+        data[i] = other.data[i];
+    }
+
+    return *this;
+}
+
+    // ГЋГЇГҐГ°Г ГІГ®Г° Г±Г«Г®Г¦ГҐГ­ГЁГї
     Vector operator+(const Vector& other) const {
         if (length != other.length) {
             throw std::invalid_argument("Vectors must be of the same length");
@@ -78,7 +83,7 @@ public:
         return result;
     }
 
-    // Метод print
+    // ГЊГҐГІГ®Г¤ print
     void print() const {
         for (size_t i = 0; i < length; ++i) {
             std::cout << data[i] << " ";
@@ -86,7 +91,7 @@ public:
         std::cout << std::endl;
     }
 
-    // Оператор сравнения ==
+    // ГЋГЇГҐГ°Г ГІГ®Г° Г±Г°Г ГўГ­ГҐГ­ГЁГї ==
     bool operator==(const Vector& other) const {
         if (length != other.length) {
             return false;
@@ -99,27 +104,27 @@ public:
         return true;
     }
 
-    // Оператор []
+    // ГЋГЇГҐГ°Г ГІГ®Г° []
     int& operator[](size_t index) {
-        if (index == 0 || index > length) { // Запрет доступа к 0-му элементу
+        if (index == 0 || index > length) { // Г‡Г ГЇГ°ГҐГІ Г¤Г®Г±ГІГіГЇГ  ГЄ 0-Г¬Гі ГЅГ«ГҐГ¬ГҐГ­ГІГі
             throw std::out_of_range("Index must be greater than 0 and less than or equal to length");
         }
-        return data[index - 1];  // Возврат элемента с учетом смещения
+        return data[index - 1];  // Г‚Г®Г§ГўГ°Г ГІ ГЅГ«ГҐГ¬ГҐГ­ГІГ  Г± ГіГ·ГҐГІГ®Г¬ Г±Г¬ГҐГ№ГҐГ­ГЁГї
     }
 
     const int& operator[](size_t index) const {
-        if (index == 0 || index > length) { // Запрет доступа к 0-му элементу
+        if (index == 0 || index > length) { // Г‡Г ГЇГ°ГҐГІ Г¤Г®Г±ГІГіГЇГ  ГЄ 0-Г¬Гі ГЅГ«ГҐГ¬ГҐГ­ГІГі
             throw std::out_of_range("Index must be greater than 0 and less than or equal to length");
         }
-        return data[index - 1];  // Возврат элемента с учетом смещения
+        return data[index - 1];  // Г‚Г®Г§ГўГ°Г ГІ ГЅГ«ГҐГ¬ГҐГ­ГІГ  Г± ГіГ·ГҐГІГ®Г¬ Г±Г¬ГҐГ№ГҐГ­ГЁГї
     }
 
-    // Метод size
+    // ГЊГҐГІГ®Г¤ size
     size_t size() const {
         return length;
     }
 
-    // Деструктор
+    // Г„ГҐГ±ГІГ°ГіГЄГІГ®Г°
     ~Vector() {
         delete[] data;
     }
